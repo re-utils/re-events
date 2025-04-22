@@ -1,8 +1,12 @@
 {
   "name": "re-events",
   "version": "0.0.1",
-  "description": "Event emitter API",
+  "description": "Fast event utilities",
   "keywords": [],
+  "repository": {
+    "type": "github",
+    "url": "https://github.com/re-utils/re-events"
+  },
   "license": "MIT",
   "type": "module",
   "main": "./index.js",

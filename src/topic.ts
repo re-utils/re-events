@@ -46,16 +46,18 @@ export const swap = <T>(t: Subscriber<T>, f: (data: T) => any): void => {
  * Detach a subscriber from the topic
  */
 export const detach = <T>(t: Subscriber<T>): void => {
-  const i = t[0];
-  t[1][1].pop()![0] = i;
+  // Move the subscriber at the end of the array
+  t[1][1].pop()![0] = t[0];
+
   const h = t[1][0];
-  h[i] = h.pop()!;
+  h[t[0]] = h.pop()!;
 }
 
 /**
  * Publish a message to the topic
  */
 export const publish = <T>(t: Topic<T>, msg: T): void => {
+  // Optimized for fast iteration
   for (let i = 0, h = t[0]; i < h.length; i++)
     h[i](msg);
 }

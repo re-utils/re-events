@@ -1,1 +1,1 @@
-A fast, small eventing package.
+Fast event utilities.
