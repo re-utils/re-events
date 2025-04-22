@@ -1,0 +1,16 @@
+{
+  "lockfileVersion": 1,
+  "workspaces": {
+    "": {
+      "dependencies": {
+        "nano-pubsub": "^3.0.0",
+        "picobus": "^1.1.0",
+      },
+    },
+  },
+  "packages": {
+    "nano-pubsub": ["nano-pubsub@3.0.0", "", {}, "sha512-zoTNyBafxG0+F5PP3T3j1PKMr7gedriSdYRhLFLRFCz0OnQfQ6BkVk9peXVF30hz633Bw0Zh5McleOrXPjWYCQ=="],
+
+    "picobus": ["picobus@1.1.0", "", {}, "sha512-VkeSR+qv7mciPqzxlvBoy3/RUG85TH2eheZnqdwDXGKvkHEBxglXKqmXz/xXHXzXJTl0KBc+ogj1F/edhMs0+g=="],
+  }
+}
