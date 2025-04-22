@@ -13,7 +13,7 @@ summary(() => {
 
     bench('re-events', () => {
       for (let i = 0; i < 1e2; i++)
-        topic.publish(numbers, i);
+        topic.dispatch(numbers, i);
     });
   }
 

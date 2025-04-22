@@ -5,29 +5,35 @@
 /**
  * Describe a subscriber of a topic
  */
-export type Subscriber<T = any> = [
-  idx: number,
-  topic: Topic<T>
-];
+export type Subscriber<I = any> = [
+  idx: number
+] & I;
 
 /**
  * Describe a topic
  */
-export type Topic<T = any> = [
-  handlers: ((data: T) => any)[],
-  subs: Subscriber<T>[]
+export type Topic<I = any, T = any> = readonly [
+  // Handler references
+  ((data: T) => any)[],
+
+  // Subscriber references
+  Subscriber<I>[],
+
+  // Types
+  Subscriber<I>, T
 ];
 
 /**
  * Create a topic
  */
-export const init = <T>(): Topic<T> => [[], []];
+export const init = <T>(): Topic<{ readonly _: unique symbol }, T> => [[], []] as any;
 
 /**
  * Attach a subscriber to the topic
  */
-export const attach = <T>(t: Topic<T>, f: (data: T) => any): Subscriber<T> => {
-  const s: Subscriber<T> = [t[0].length, t];
+export const attach = <T extends Topic>(t: T, f: (data: T) => any): T[2] => {
+  // Hold the handler indices
+  const s: Subscriber = [t[0].length];
   t[0].push(f);
   t[1].push(s);
   return s;
@@ -36,27 +42,28 @@ export const attach = <T>(t: Topic<T>, f: (data: T) => any): Subscriber<T> => {
 /**
  * Swap the subscriber handler with the new one
  * @param t
+ * @param s
  * @param f
  */
-export const swap = <T>(t: Subscriber<T>, f: (data: T) => any): void => {
-  t[1][0][t[0]] = f;
+export const swap = <T extends Topic>(t: T, s: T[1][number], f: (data: T) => any): void => {
+  t[0][s[0]] = f;
 }
 
 /**
  * Detach a subscriber from the topic
+ * @param t
+ * @param s
  */
-export const detach = <T>(t: Subscriber<T>): void => {
-  // Move the subscriber at the end of the array
-  t[1][1].pop()![0] = t[0];
-
-  const h = t[1][0];
-  h[t[0]] = h.pop()!;
+export const detach = <T extends Topic>(t: T, s: T[1][number]): void => {
+  // Move the subscriber to the deleted position
+  t[1].pop()![0] = t[0];
+  t[0][s[0]] = t[0].pop()!;
 }
 
 /**
  * Publish a message to the topic
  */
-export const publish = <T>(t: Topic<T>, msg: T): void => {
+export const dispatch = <T extends Topic>(t: T, msg: T[3]): void => {
   // Optimized for fast iteration
   for (let i = 0, h = t[0]; i < h.length; i++)
     h[i](msg);
