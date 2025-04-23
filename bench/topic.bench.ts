@@ -12,41 +12,34 @@ summary(() => {
       topic.attach(numbers, () => do_not_optimize(i));
 
     bench('re-events', () => {
-      for (let i = 0; i < 1e2; i++)
-        topic.dispatch(numbers, i);
+      for (let i = 0; i < 1e2; i++) topic.dispatch(numbers, i);
     });
   }
 
   {
     const numbers = picobus<number>();
-    for (let i = 0; i < 1e2; i++)
-      numbers.listen(() => do_not_optimize(i));
+    for (let i = 0; i < 1e2; i++) numbers.listen(() => do_not_optimize(i));
 
     bench('picobus', () => {
-      for (let i = 0; i < 1e2; i++)
-        numbers.dispatch(i);
+      for (let i = 0; i < 1e2; i++) numbers.dispatch(i);
     });
   }
 
   {
     const numbers = nanops<number>();
-    for (let i = 0; i < 1e2; i++)
-      numbers.subscribe(() => do_not_optimize(i));
+    for (let i = 0; i < 1e2; i++) numbers.subscribe(() => do_not_optimize(i));
 
     bench('nano-pubsub', () => {
-      for (let i = 0; i < 1e2; i++)
-        numbers.publish(i);
+      for (let i = 0; i < 1e2; i++) numbers.publish(i);
     });
   }
 
   {
     const numbers = mitt<{ a: number }>();
-    for (let i = 0; i < 1e2; i++)
-      numbers.on('a', () => do_not_optimize(i));
+    for (let i = 0; i < 1e2; i++) numbers.on('a', () => do_not_optimize(i));
 
     bench('mitt', () => {
-      for (let i = 0; i < 1e2; i++)
-        numbers.emit('a', i);
+      for (let i = 0; i < 1e2; i++) numbers.emit('a', i);
     });
   }
 });
